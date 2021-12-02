@@ -13,7 +13,7 @@ const Search = ({ word, setWord, handleSubmit }) => {
                   type="text"
                   value={word}
                   onChange={(event) => setWord(event.target.value)}
-                  placeholder="Search for new image..."
+                  placeholder={word ? word : "Search for new image..."}
                 />
               </Col>
               <Col>

@@ -21,6 +21,7 @@ function App() {
       .catch((err) => {
         console.error(err)
       })
+    setWord("")
   }
   return (
     <div className="App">
