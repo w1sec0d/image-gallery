@@ -2,11 +2,11 @@ import React from "react"
 import { Navbar, Container } from "react-bootstrap"
 import {ReactComponent as Logo} from "../images/logo.svg"
 
-const Header = () => {
+const Header = ({title}) => {
   return (
     <Navbar variant="light" style={{background:"#FDFDFD"}}>
       <Container>
-        <Logo style={{maxWidth:"12rem", maxHeigth: "2rem"}}/>
+        <Logo alt={title} style={{maxWidth:"12rem", maxHeigth: "2rem"}}/>
       </Container>
     </Navbar>
   )

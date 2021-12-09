@@ -2,5 +2,10 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": ["html", "javascript", "javascriptreact"]
+  "eslint.validate": [
+    "html",
+    "javascript",
+    "javascriptreact"
+  ],
+  "editor.tabSize": 2
 }
