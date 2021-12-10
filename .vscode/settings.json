@@ -7,5 +7,6 @@
     "javascript",
     "javascriptreact"
   ],
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "python.pythonPath": "api/.venv/Scripts/python.exe"
 }
