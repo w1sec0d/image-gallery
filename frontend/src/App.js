@@ -9,7 +9,8 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import "./appStyle.css";
 
-const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
+// const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const App = () => {
   const [word, setWord] = useState("");
@@ -17,9 +18,7 @@ const App = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    fetch(
-      `https://api.unsplash.com/photos/random/?query=${word}&client_id=${UNSPLASH_KEY}`
-    )
+    fetch(`${API_URL}/new-image?query=${word}`)
       .then((res) => res.json()) //code executed when promise is resolved
       .then((data) => {
         setImages([{ ...data, title: word }, ...images]);
