@@ -17,6 +17,7 @@ if not UNSPLASH_KEY:
 
 app = Flask(__name__)
 CORS(app)
+
 app.config["DEBUG"] = DEBUG
 
 
