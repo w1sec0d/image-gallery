@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState } from "react";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/Header";
 import Search from "./components/Search";
@@ -16,16 +17,14 @@ const App = () => {
   const [word, setWord] = useState("");
   const [images, setImages] = useState([]);
 
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = async (event) => {
     event.preventDefault();
-    fetch(`${API_URL}/new-image?query=${word}`)
-      .then((res) => res.json()) //code executed when promise is resolved
-      .then((data) => {
-        setImages([{ ...data, title: word }, ...images]);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      const res = await axios.get(`${API_URL}/new-image?query=${word}`);
+      setImages([{ ...res.data, title: word }, ...images]);
+    } catch (error) {
+      console.error(error);
+    }
     setWord("");
   };
 
