@@ -7,7 +7,9 @@ import Search from "./components/Search";
 import ImageCard from "./components/ImageCard";
 import Welcome from "./components/Welcome";
 import Spinner from "./components/Spinner";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./appStyle.css";
 
@@ -23,9 +25,13 @@ const App = () => {
     try {
       let response = await axios.get(`${API_URL}/images`);
       setImages(response.data || []);
+      if (response.data.length !== 0) {
+        toast.success("Saved images downloaded");
+        console.log(response.data);
+      }
       setLoading(false);
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   };
 
@@ -36,16 +42,20 @@ const App = () => {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.get(`${API_URL}/new-image?query=${word}`);
+      const res = await axios.get(
+        `${API_URL}/new-image?query=${word.toUpperCase()}`
+      );
       setImages([{ ...res.data, title: word }, ...images]);
+      toast.info(`New image ${word.toUpperCase()} was found`);
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
     setWord("");
   };
 
   const handleDeleteImage = async (id) => {
     try {
+      const imageTitle = images.find((image) => image.id === id).title;
       const res = await axios.delete(`${API_URL}/images/${id}`);
       if (res.data?.deleted_id) {
         setImages(
@@ -54,6 +64,7 @@ const App = () => {
           })
         );
       }
+      toast.warn(`Image ${imageTitle} was deleted`);
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +82,7 @@ const App = () => {
           )
         );
       }
+      toast.info(`New image ${imageToBeSaved.title.toUpperCase()} was saved`);
     } catch (error) {
       console.error(error);
     }
@@ -107,6 +119,7 @@ const App = () => {
           </Container>
         </>
       )}
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, Row } from "react-bootstrap";
+import { Card, Button, Row, Nav } from "react-bootstrap";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 
@@ -35,6 +35,17 @@ const ImageCard = ({ image, deleteImage, saveImage }) => {
           </Button>
         </Row>
       </Card.Body>
+      <Card.Footer className="text-muted text-center">
+        {image.user.portfolio_url ? (
+          <Nav.Link href={image.user.portfolio_url} target="_blank">
+            <p style={{ margin: "0" }}>{image.user.name}</p>
+          </Nav.Link>
+        ) : image.user.name ? (
+          <p style={{ margin: "0" }}>{image.user.name}</p>
+        ) : (
+          <p style={{ margin: "0" }}>No author name</p>
+        )}
+      </Card.Footer>
     </Card>
   );
 };
