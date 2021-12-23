@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/Header";
@@ -16,6 +16,19 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const App = () => {
   const [word, setWord] = useState("");
   const [images, setImages] = useState([]);
+
+  const getSavedImages = async () => {
+    try {
+      let response = await axios.get(`${API_URL}/images`);
+      setImages(response.data || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getSavedImages();
+  }, []);
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
