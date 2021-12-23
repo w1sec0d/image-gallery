@@ -6,10 +6,10 @@ import Header from "./components/Header";
 import Search from "./components/Search";
 import ImageCard from "./components/ImageCard";
 import Welcome from "./components/Welcome";
-import { Container, Row, Col } from "react-bootstrap";
+import Spinner from "./components/Spinner";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 import "./appStyle.css";
-import { red } from "@mui/material/colors";
 
 // const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
@@ -17,11 +17,13 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const App = () => {
   const [word, setWord] = useState("");
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getSavedImages = async () => {
     try {
       let response = await axios.get(`${API_URL}/images`);
       setImages(response.data || []);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -77,24 +79,34 @@ const App = () => {
   return (
     <div className="App">
       <Header title="Image Gallery" />
-      <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
-      <Container className="mt-4 justify-content-center align-content-center">
-        {images.length ? (
-          <Row xs={1} md={2} lg={3}>
-            {images.map((image, index) => (
-              <Col key={index} className="pb-3">
-                <ImageCard
-                  image={image}
-                  saveImage={handleSaveImage}
-                  deleteImage={handleDeleteImage}
-                />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <Welcome />
-        )}
-      </Container>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Search
+            word={word}
+            setWord={setWord}
+            handleSubmit={handleSearchSubmit}
+          />
+          <Container className="mt-4 justify-content-center align-content-center">
+            {images.length ? (
+              <Row xs={1} md={2} lg={3}>
+                {images.map((image, index) => (
+                  <Col key={index} className="pb-3">
+                    <ImageCard
+                      image={image}
+                      saveImage={handleSaveImage}
+                      deleteImage={handleDeleteImage}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            ) : (
+              <Welcome />
+            )}
+          </Container>
+        </>
+      )}
     </div>
   );
 };
