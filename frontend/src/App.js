@@ -9,6 +9,7 @@ import Welcome from "./components/Welcome";
 import { Container, Row, Col } from "react-bootstrap";
 
 import "./appStyle.css";
+import { red } from "@mui/material/colors";
 
 // const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
@@ -41,12 +42,19 @@ const App = () => {
     setWord("");
   };
 
-  const handleDeleteImage = (id) => {
-    setImages(
-      images.filter((image) => {
-        return image.id !== id;
-      })
-    );
+  const handleDeleteImage = async (id) => {
+    try {
+      const res = await axios.delete(`${API_URL}/images/${id}`);
+      if (res.data?.deleted_id) {
+        setImages(
+          images.filter((image) => {
+            return image.id !== id;
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSaveImage = async (id) => {
