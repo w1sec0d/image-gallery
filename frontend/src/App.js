@@ -49,16 +49,37 @@ const App = () => {
     );
   };
 
+  const handleSaveImage = async (id) => {
+    let imageToBeSaved = images.find((image) => image.id === id);
+    imageToBeSaved.saved = true;
+    try {
+      let response = await axios.post(`${API_URL}/images`, imageToBeSaved);
+      if (response.data?.inserted_id) {
+        setImages(
+          images.map((image) =>
+            image.id === id ? { ...image, saved: true } : image
+          )
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="App">
       <Header title="Image Gallery" />
       <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
-      <Container className="mt-4">
+      <Container className="mt-4 justify-content-center align-content-center">
         {images.length ? (
           <Row xs={1} md={2} lg={3}>
             {images.map((image, index) => (
               <Col key={index} className="pb-3">
-                <ImageCard image={image} deleteImage={handleDeleteImage} />
+                <ImageCard
+                  image={image}
+                  saveImage={handleSaveImage}
+                  deleteImage={handleDeleteImage}
+                />
               </Col>
             ))}
           </Row>
